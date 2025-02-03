@@ -55,5 +55,5 @@ class BookService(val bookRepository: BookRepository) {
 class DemoController {
 
 	@GetMapping("/")
-	fun demo() = "Hello, Render!"
+	fun demo() = "Hello, Render!!!"
 }
