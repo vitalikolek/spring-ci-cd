@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Java CI/CD with Gradle
 
 on:
   push:
@@ -28,8 +28,17 @@ jobs:
       - name: Allow gradlew execute
         run: chmod +x gradlew
 
-      - name: Build with Gradle Wrapper
-        run: ./gradlew build
+      - name: Clean and Build with Gradle Wrapper
+        run: ./gradlew clean build --no-daemon
+
+      - name: Debug Build Output
+        run: ls -R build/libs
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-file
+          path: build/libs/*.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -39,6 +48,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jar-file
+          path: build/libs
+
+      - name: Debug Downloaded JAR
+        run: ls -R build/libs
 
       - name: Publish to Docker Registry
         uses: elgohr/Publish-Docker-Github-Action@v5

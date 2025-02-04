@@ -1,8 +1,9 @@
-FROM openjdk:21-jdk
+FROM openjdk:17-jdk
+
+WORKDIR /app
+
+COPY build/libs/*.jar app.jar
 
 EXPOSE 8080
 
-COPY ./build/libs/spring-ci-cd-0.0.1-SNAPSHOT.jar /usr/app/
-WORKDIR /usr/app
-
-ENTRYPOINT ["java", "-jar", "spring-ci-cd-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
